@@ -1,5 +1,5 @@
 diff --git a/packages/engine-api/src/Schemas.ts b/packages/engine-api/src/Schemas.ts
-index 909bb3956..e27a69a95 100644
+index 533274889..104a212e6 100644
 --- a/packages/engine-api/src/Schemas.ts
 +++ b/packages/engine-api/src/Schemas.ts
 @@ -293,6 +293,8 @@ export const GameConfigSchema = z.object({
@@ -12,7 +12,7 @@ index 909bb3956..e27a69a95 100644
    disableAlliances: z.boolean().nullable().optional(),
    disableClanTags: z.boolean().optional(),
 diff --git a/packages/engine/src/GameRunner.ts b/packages/engine/src/GameRunner.ts
-index 7c88eb772..cd775a60a 100644
+index 12ed15a8d..baa5b4378 100644
 --- a/packages/engine/src/GameRunner.ts
 +++ b/packages/engine/src/GameRunner.ts
 @@ -7,6 +7,7 @@ import {
@@ -23,7 +23,7 @@ index 7c88eb772..cd775a60a 100644
    PlayerActions,
    PlayerBorderTiles,
    PlayerBuildableUnitType,
-@@ -26,6 +27,7 @@ import { loadTerrainMap } from "@openfront/engine-lib/game/TerrainMapLoader";
+@@ -29,6 +30,7 @@ import { loadTerrainMap } from "@openfront/engine-lib/game/TerrainMapLoader";
  import { PseudoRandom } from "@openfront/engine-lib/PseudoRandom";
  import { simpleHash } from "@openfront/engine-lib/Util";
  import { EngineConfig } from "./configuration/EngineConfig";
@@ -31,7 +31,7 @@ index 7c88eb772..cd775a60a 100644
  import { DoomsdayClockExecution } from "./execution/DoomsdayClockExecution";
  import { Executor } from "./execution/ExecutionManager";
  import { RecomputeRailClusterExecution } from "./execution/RecomputeRailClusterExecution";
-@@ -93,9 +95,34 @@ export async function createGameRunner(
+@@ -96,9 +98,34 @@ export async function createGameRunner(
      callBack,
    );
    gr.init();
@@ -67,10 +67,10 @@ index 7c88eb772..cd775a60a 100644
  function loadGameMap(
    config: Pick<GameStartInfo["config"], "gameMap" | "gameMapSize">,
 diff --git a/resources/lang/en.json b/resources/lang/en.json
-index 5130cc7d3..6957f0078 100644
+index 44cd542e5..601658520 100644
 --- a/resources/lang/en.json
 +++ b/resources/lang/en.json
-@@ -1016,6 +1016,7 @@
+@@ -1405,6 +1405,7 @@
      "infinite_gold": "Infinite gold",
      "infinite_troops": "Infinite troops",
      "instant_build": "Instant build",
@@ -79,10 +79,10 @@ index 5130cc7d3..6957f0078 100644
      "mins_placeholder": "Mins",
      "nations": "Nations: ",
 diff --git a/src/client/SinglePlayerModal.ts b/src/client/SinglePlayerModal.ts
-index af3c49ec8..ee38e76da 100644
+index df8698687..edc960deb 100644
 --- a/src/client/SinglePlayerModal.ts
 +++ b/src/client/SinglePlayerModal.ts
-@@ -105,6 +105,7 @@ const DEFAULT_OPTIONS = {
+@@ -138,6 +138,7 @@ const DEFAULT_OPTIONS = {
    maxTimer: false,
    maxTimerValue: undefined as number | undefined,
    instantBuild: false,
@@ -90,7 +90,7 @@ index af3c49ec8..ee38e76da 100644
    randomSpawn: false,
    useRandomMap: false,
    gameMode: GameMode.FFA,
-@@ -182,6 +183,7 @@ export class SinglePlayerModal extends BaseModal {
+@@ -215,6 +216,7 @@ export class SinglePlayerModal extends BaseModal {
    @state() private maxTimerValue: number | undefined =
      DEFAULT_OPTIONS.maxTimerValue;
    @state() private instantBuild: boolean = DEFAULT_OPTIONS.instantBuild;
@@ -98,7 +98,7 @@ index af3c49ec8..ee38e76da 100644
    @state() private randomSpawn: boolean = DEFAULT_OPTIONS.randomSpawn;
    @state() private useRandomMap: boolean = DEFAULT_OPTIONS.useRandomMap;
    @state() private gameMode: GameMode = DEFAULT_OPTIONS.gameMode;
-@@ -526,6 +528,10 @@ export class SinglePlayerModal extends BaseModal {
+@@ -591,6 +593,10 @@ export class SinglePlayerModal extends BaseModal {
                    disabledKey: "common.disabled",
                  },
                  toggles: [
@@ -109,7 +109,7 @@ index af3c49ec8..ee38e76da 100644
                    {
                      labelKey: "game_settings.instant_build",
                      checked: this.instantBuild,
-@@ -612,6 +618,7 @@ export class SinglePlayerModal extends BaseModal {
+@@ -682,6 +688,7 @@ export class SinglePlayerModal extends BaseModal {
        this.compactMap !== DEFAULT_OPTIONS.compactMap ||
        this.maxTimer !== DEFAULT_OPTIONS.maxTimer ||
        this.instantBuild !== DEFAULT_OPTIONS.instantBuild ||
@@ -117,7 +117,7 @@ index af3c49ec8..ee38e76da 100644
        this.randomSpawn !== DEFAULT_OPTIONS.randomSpawn ||
        this.gameMode !== DEFAULT_OPTIONS.gameMode ||
        this.goldMultiplier !== DEFAULT_OPTIONS.goldMultiplier ||
-@@ -685,6 +692,7 @@ export class SinglePlayerModal extends BaseModal {
+@@ -810,6 +817,7 @@ export class SinglePlayerModal extends BaseModal {
      this.maxTimer = DEFAULT_OPTIONS.maxTimer;
      this.maxTimerValue = DEFAULT_OPTIONS.maxTimerValue;
      this.instantBuild = DEFAULT_OPTIONS.instantBuild;
@@ -125,7 +125,7 @@ index af3c49ec8..ee38e76da 100644
      this.randomSpawn = DEFAULT_OPTIONS.randomSpawn;
      this.teamCount = DEFAULT_OPTIONS.teamCount;
      this.disabledUnits = [...DEFAULT_OPTIONS.disabledUnits];
-@@ -775,6 +783,9 @@ export class SinglePlayerModal extends BaseModal {
+@@ -1017,6 +1025,9 @@ export class SinglePlayerModal extends BaseModal {
      const { labelKey, checked } = customEvent.detail;
  
      switch (labelKey) {
@@ -135,16 +135,16 @@ index af3c49ec8..ee38e76da 100644
        case "game_settings.instant_build":
          this.instantBuild = checked;
          break;
-@@ -1155,6 +1166,7 @@ export class SinglePlayerModal extends BaseModal {
-                 donateTroops: this.gameMode === GameMode.Team,
-                 infiniteTroops: this.infiniteTroops,
-                 instantBuild: this.instantBuild,
-+                ...(this.botAutoplay ? { botAutoplay: true } : {}),
-                 randomSpawn: this.randomSpawn,
-                 disabledUnits: this.disabledUnits.filter(
-                   (unit): unit is UnitType =>
+@@ -1346,6 +1357,7 @@ export class SinglePlayerModal extends BaseModal {
+             donateTroops: this.gameMode === GameMode.Team,
+             infiniteTroops: this.infiniteTroops,
+             instantBuild: this.instantBuild,
++            ...(this.botAutoplay ? { botAutoplay: true } : {}),
+             randomSpawn: this.randomSpawn,
+             disabledUnits: this.disabledUnits.filter((unit): unit is UnitType =>
+               Object.values(UnitType).includes(unit),
 diff --git a/src/client/hud/layers/MultiTabModal.ts b/src/client/hud/layers/MultiTabModal.ts
-index a192c537e..ff77ff03a 100644
+index 21fb1ee36..5990f6f38 100644
 --- a/src/client/hud/layers/MultiTabModal.ts
 +++ b/src/client/hud/layers/MultiTabModal.ts
 @@ -32,6 +32,7 @@ export class MultiTabModal extends LitElement implements Controller {
