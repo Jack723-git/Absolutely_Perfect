@@ -443,7 +443,7 @@ export class BotExecution extends NationExecution {
       const dens = o.troops() / Math.max(1, o.numTilesOwned());
       const send = Math.max(1000, this.params.snipeK * dens * 40);
       if (send > this.params.snipeMax * troops) continue;
-      for (const u of o.units(...types)) {
+      for (const u of o.units(types)) {
         const t = u.tile();
         if (!map.isShore(t) && u.type() !== UnitType.Port) continue;
         if (ticks - (this.sniped.get(u.id()) ?? -1e9) < 600) continue;
@@ -526,7 +526,10 @@ export class BotExecution extends NationExecution {
       }
       if (allyRisk > this.params.grabAllyRisk * troops) { dbg("allyrisk"); continue; }
       let value = 0;
-      for (const u of o.units(...types)) if (nearBorder(u.tile())) value += (VAL[u.type()] ?? 0) * u.level();
+      // units() reads at most 3 positional types (array form for more), so the
+      // old units(...types) spread only ever counted City, Port and Factory;
+      // kept as it ran (port to v0.36.6, no re-tuning), not widened to Silo/SAM.
+      for (const u of o.units(types[0], types[1], types[2])) if (nearBorder(u.tile())) value += (VAL[u.type()] ?? 0) * u.level();
       if (value <= 0) { dbg(o.type() === PlayerType.Bot ? "novalBot" : "noval"); continue; }
       const need = this.params.grabK * o.troops();
       const send = Math.min(need, budget);

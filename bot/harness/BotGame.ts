@@ -303,7 +303,7 @@ export async function playGame(
     return 1 + majors().filter((p) => p.isAlive() && p.numTilesOwned() > mine).length;
   };
 
-  const checkpoints: Record<string, { share: number; rank: number; C: number; P: number; L?: number }> = {};
+  const checkpoints: Record<string, { share: number; rank: number; C: number; P: number; L?: number; [k: string]: number | undefined }> = {};
   // Hopeless rule (strict): [minute, min land share, min fraction of the leader's land].
   // Fires when EITHER bound fails at/after that minute. Always
   // recorded as hopelessAt (also in audit runs without --hopeless); with --hopeless the
@@ -431,7 +431,9 @@ export async function playGame(
     }
     if (trace || game.ticks() % 10 === 0) {
       for (const q of game.allPlayers()) {
-        for (const u of q.units(...nukeTypes)) {
+        // units() reads at most 3 positional types: the old spread never listed
+        // MIRVWarhead. Kept as it ran (trace output only).
+        for (const u of q.units(nukeTypes[0], nukeTypes[1], nukeTypes[2])) {
           if (seenNukes.has(u.id())) continue;
           seenNukes.add(u.id());
           const tgt = u.targetTile();
