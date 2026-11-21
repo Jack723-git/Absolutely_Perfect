@@ -919,7 +919,7 @@ describe("BotExecution mirvDump", () => {
     if (mirv) {
       const orig = game.units.bind(game);
       vi.spyOn(game, "units").mockImplementation(((...ts: UnitType[]) =>
-        ts.includes(UnitType.MIRV) ? [{ owner: () => hp, targetTile: () => game.ref(5, 5) }] : orig(...ts)) as any);
+        ts.includes(UnitType.MIRV) ? [{ owner: () => hp, targetTile: () => game.ref(5, 5) }] : (orig as (...a: UnitType[]) => any)(...ts)) as any);
     }
     const got: any[] = [];
     vi.spyOn(game as any, "addExecution").mockImplementation((...ex: any[]) => { got.push(...ex); });
@@ -955,7 +955,7 @@ describe("BotExecution mirvDump", () => {
     const o = await make(0.05, 0.05, false);
     const orig = o.game.units.bind(o.game);
     vi.spyOn(o.game, "units").mockImplementation(((...ts: UnitType[]) =>
-      ts.includes(UnitType.MIRV) ? [{ owner: () => o.hp, targetTile: () => o.game.ref(105, 5) }] : orig(...ts)) as any);
+      ts.includes(UnitType.MIRV) ? [{ owner: () => o.hp, targetTile: () => o.game.ref(105, 5) }] : (orig as (...a: UnitType[]) => any)(...ts)) as any);
     o.b.mirvDumpTick(o.mp);
     expect(sends(o)).toEqual([]);
   });
@@ -1040,16 +1040,16 @@ describe("BotExecution samCluster", () => {
     b.samClusterTick(mp);
     expect(built.length).toBe(0); // 2 levels < 5
     // our own bomb and an enemy bomb at its own land don't count
-    mp.buildUnit(UnitType.AtomBomb, game.ref(50, 50), { targetTile: game.ref(100, 170) });
-    ep.buildUnit(UnitType.AtomBomb, game.ref(100, 180), { targetTile: game.ref(100, 170) });
+    mp.buildUnit(UnitType.AtomBomb, game.ref(50, 50), { targetTile: game.ref(100, 170) } as any);
+    ep.buildUnit(UnitType.AtomBomb, game.ref(100, 180), { targetTile: game.ref(100, 170) } as any);
     b.samClusterTick(mp);
     expect(built.length).toBe(0);
     // one enemy atom bomb at us: bar 5 / 2 = 2.5 > 2, still none
-    ep.buildUnit(UnitType.AtomBomb, game.ref(100, 180), { targetTile: game.ref(60, 60) });
+    ep.buildUnit(UnitType.AtomBomb, game.ref(100, 180), { targetTile: game.ref(60, 60) } as any);
     b.samClusterTick(mp);
     expect(built.length).toBe(0);
     // plus a hydrogen bomb: n = 3, bar 1.25 <= 2: a SAM
-    ep.buildUnit(UnitType.HydrogenBomb, game.ref(100, 180), { targetTile: game.ref(60, 60) });
+    ep.buildUnit(UnitType.HydrogenBomb, game.ref(100, 180), { targetTile: game.ref(60, 60) } as any);
     b.samClusterTick(mp);
     expect(built.length).toBe(1);
     // 5 minutes later the heat is gone
@@ -1316,7 +1316,7 @@ describe("BotExecution homeKeep", () => {
     b.params = { ...b.params, minKeep: 0.2, homeKeep: 0 };
     const s = Math.round(0.2 * maxT);
     expect(tick(() => [new AttackExecution(s, mp, tp.id())])).toEqual([s]);
-    op.buildUnit(UnitType.AtomBomb, game.ref(120, 50), { targetTile: game.ref(50, 50) });
+    op.buildUnit(UnitType.AtomBomb, game.ref(120, 50), { targetTile: game.ref(50, 50) } as any);
     // the test config shrinks blasts to 1 tile; use the real atom bomb's
     vi.spyOn(game.config(), "nukeMagnitudes").mockReturnValue({ inner: 12, outer: 30 });
     const m = game.config().nukeMagnitudes(UnitType.AtomBomb);
@@ -1331,7 +1331,7 @@ describe("BotExecution homeKeep", () => {
     // our own bombs don't count
     const mine = game.units(UnitType.AtomBomb)[0];
     mine.delete(false);
-    mp.buildUnit(UnitType.AtomBomb, game.ref(50, 50), { targetTile: game.ref(60, 50) });
+    mp.buildUnit(UnitType.AtomBomb, game.ref(50, 50), { targetTile: game.ref(60, 50) } as any);
     expect(tick(() => [new AttackExecution(s, mp, tp.id())])).toEqual([s]);
   });
 });

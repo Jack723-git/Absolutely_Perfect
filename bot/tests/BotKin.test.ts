@@ -277,11 +277,11 @@ describe("BotExecution emojiMode", () => {
     for (const r of [...mp.outgoingAllianceRequests()]) (bot as any).askSeen.add(r);
     (game as any).ticks = () => 1e6;
     ask();
-    expect(sent.at(-1)).toBe(id("🤝")); // 3rd ask, no silo yet
+    expect(sent[sent.length - 1]).toBe(id("🤝")); // 3rd ask, no silo yet
     (bot as any).askCount.set("a", 3);
     mp.buildUnit(UnitType.MissileSilo, game.ref(90, 100), {});
     ask();
-    expect(sent.at(-1)).toBe(id("☢️"));
+    expect(sent[sent.length - 1]).toBe(id("☢️"));
     expect(bot.emojisSent.nuke).toBe(1);
   });
 });

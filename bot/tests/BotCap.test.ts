@@ -941,7 +941,7 @@ describe("BotExecution port arms", () => {
     const mirv = { owner: () => s.a, targetTile: () => 7 };
     const realUnits = s.game.units.bind(s.game);
     const realOwner = s.game.owner.bind(s.game);
-    (s.game as any).units = (...t: any[]) => (t.includes(UnitType.MIRV) ? [mirv] : realUnits(...t));
+    (s.game as any).units = (...t: any[]) => (t.includes(UnitType.MIRV) ? [mirv] : (realUnits as (...a: any[]) => any)(...t));
     (s.game as any).owner = (t: any) => (t === 7 ? s.me : realOwner(t));
     expect(bot.holdOn(s.me)).toBe(true);
     expect(bot.holdBroken).toBe(false);
