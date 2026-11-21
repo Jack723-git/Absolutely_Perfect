@@ -1332,8 +1332,13 @@ export class BotExecution extends NationExecution {
     if (this.params.allySelect > 0) return this.choosyDiplomacy(me, ticks);
     for (const req of me.incomingAllianceRequests()) req.accept();
     if (ticks % 20 !== 0) return;
+    // v0.36.6: AllianceExtensionExecution ignores an extension sent before the
+    // prompt window (expiresAt > now + allianceExtensionPromptOffset, 300 ticks),
+    // so a send at 60 s left no longer registers and would repeat every 20 ticks
+    // until the window opens. Send from inside the window only.
+    const renewAt = Math.min(600, g.config().allianceExtensionPromptOffset());
     for (const a of me.alliances()) {
-      if (a.expiresAt() - ticks < 600 && !a.agreedToExtend(me)) {
+      if (a.expiresAt() - ticks <= renewAt && !a.agreedToExtend(me)) {
         g.addExecution(new AllianceExtensionExecution(me, a.other(me).id()));
       }
     }
