@@ -22,7 +22,7 @@ steps download it from its official public source.
 openfront-bot.user.js (and any userscript built with userscript-source/build.mjs)
 contains a compiled copy of the OpenFront game engine (AGPL-3.0). Its
 corresponding source is the OpenFrontIO repository at the tag named in the
-script's @description (v0.35.6 for the current script;
+script's @description (v0.36.6 for the current script;
 https://github.com/openfrontio/OpenFrontIO) plus bot/BotExecution.ts (or
 bot/v34/BotExecution.ts for v0.34 builds) and userscript-source/ in this
 repository. If you share a built userscript, AGPL-3.0 requires you to also
