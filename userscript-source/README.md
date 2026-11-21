@@ -155,16 +155,16 @@ new site version when you can.
 
 ## Building for the live site
 
-The live site runs v0.35.6 (script 0.7 on; 0.6.3.9-0.6.4.0 were built on v0.35.4, whose engine code is the same), which uses the package layout (`packages/engine/…`).
+The live site runs v0.36.6 (built on v0.35.6 up to script 0.7.3.1, whose shadow desyncs on the v0.36.6 site; 0.6.3.9-0.6.4.0 were built on v0.35.4, whose engine code is the same), which uses the package layout (`packages/engine/…`).
 Build from a checkout of that tag with the bot copied in (run from the
 repository root; `bash setup.sh` makes the same checkout in `tools/game`):
 
 ```bash
-git clone --branch v0.35.6 https://github.com/openfrontio/OpenFrontIO.git tools/OpenFrontIO-v0.35.6
-mkdir -p tools/OpenFrontIO-v0.35.6/packages/engine/src/execution/bot
-cp bot/BotExecution.ts tools/OpenFrontIO-v0.35.6/packages/engine/src/execution/bot/
-cd tools/OpenFrontIO-v0.35.6 && npm ci --ignore-scripts --engine-strict=false && cd ../..
-node userscript-source/build.mjs --repo tools/OpenFrontIO-v0.35.6 --live
+git clone --branch v0.36.6 https://github.com/openfrontio/OpenFrontIO.git tools/OpenFrontIO-v0.36.6
+mkdir -p tools/OpenFrontIO-v0.36.6/packages/engine/src/execution/bot
+cp bot/BotExecution.ts tools/OpenFrontIO-v0.36.6/packages/engine/src/execution/bot/
+cd tools/OpenFrontIO-v0.36.6 && npm ci --ignore-scripts --engine-strict=false && cd ../..
+node userscript-source/build.mjs --repo tools/OpenFrontIO-v0.36.6 --live
 ```
 
 For a site still on v0.34.24 (older single-package layout, `src/core/…`), use
