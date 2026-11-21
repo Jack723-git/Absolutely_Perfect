@@ -10,7 +10,7 @@ This repository does not include the game's source code. The game can be downloa
 
 ## Contents
 - `openfront-bot.user.js`: the ready-to-install Tampermonkey script.
-- `bot/BotExecution.ts`: the bot (game version v0.35.6).
+- `bot/BotExecution.ts`: the bot (game version v0.36.6).
 - `bot/harness/`: headless game runner (`BotGame.ts`), stand-in opponents, evaluation and tuning scripts (`Eval.mjs`, `Tune.mjs`, `stats.mjs`).
 - `bot/tests/`: unit tests.
 - `bot/v34/`: the bot ported to game version v0.34.24.
@@ -34,7 +34,7 @@ On newer versions it keeps playing by following the live game, until a version c
 
 ## 2. Training
 ### Setup
-The game itself is open source, so setup downloads it from the official repository (tag `v0.35.6`) and adds the bot on top. Needs git, Node.js 24 and bash (Git Bash on Windows).
+The game itself is open source, so setup downloads it from the official repository (tag `v0.36.6`) and adds the bot on top. Needs git, Node.js 24 and bash (Git Bash on Windows).
 
 ```
 bash setup.sh
